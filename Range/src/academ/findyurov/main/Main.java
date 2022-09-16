@@ -21,48 +21,44 @@ public class Main {
 
         System.out.println(range1.isInside(number));    // применение метода isInside
 
-        Range range;
-
         System.out.println("range intersections");
-        range1.print();
+        System.out.println(range1.toString());
         System.out.print("and ");
-        range2.print();
+        System.out.println(range2.toString());
 
-        range = Range.getInterval(range1,range2);
+        Range intersection;
 
-        if (range != null) {
-            range.print();
-        } else{
+        intersection = range1.getIntersections(range1, range2);
+
+        if (intersection != null) {
+            System.out.println(intersection.toString());
+        } else {
             System.out.println("no intersections");
         }
 
         System.out.println();
 
         System.out.print("Unification range: ");
-        range1.print();
+        System.out.println(range1.toString());
         System.out.print("and ");
-        range2.print();
-        Range[] union = Range.getUnion(range1, range2);
-        for (Range element : union) {
-            element.print();
-            System.out.print(" ");
-        }
+        System.out.println(range2.toString());
+        Range[] union = range1.getUnion(range1, range2);
+
+        Range.arraysPrint(union);
 
         System.out.println();
 
         System.out.print("Range difference: ");
-        range1.print();
+        System.out.println(range1.toString());
         System.out.print("and ");
-        range2.print();
+        System.out.print(range2.toString());
         System.out.println();
-        Range[] diff = Range.getDifference(range1, range2);
-        if (diff.length != 0) {
-            for (Range elem : diff) {
-                elem.print();
-                System.out.print(" ");
-            }
-        }else{
-            System.out.println("No difference");
+        Range[] difference = range1.getDifference(range1, range2);
+
+        if (difference.length != 0) {
+            Range.arraysPrint(difference);
+        } else {
+            System.out.print("No difference");
         }
     }
 }
