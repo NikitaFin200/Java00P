@@ -1,4 +1,6 @@
-package academ.findyurov;
+package academ.findyurov.rectangle;
+
+import academ.findyurov.shape.Shape;
 
 import java.util.Arrays;
 
@@ -13,23 +15,23 @@ public class Rectangle implements Shape {
     }
 
     @Override
-    public double getWidth() {
-        return 0;
+    public double getHeight() {
+        return height;
     }
 
     @Override
-    public double getHeight() {
-        return 0;
+    public double getWidth() {
+        return width;
     }
 
     @Override
     public double getArea() {
-        return 0;
+        return height * width;
     }
 
     @Override
     public double getPerimeter() {
-        return 0;
+        return PERIMETER_COEFFICIENT * (height + width);
     }
 
     @Override
@@ -37,9 +39,11 @@ public class Rectangle implements Shape {
         if (obj == this) {
             return true;
         }
+
         if (obj == null || obj.getClass() != this.getClass()) {
             return false;
         }
+
         Rectangle p = (Rectangle) obj;
         return (width == p.width) && (height == p.height);
     }

@@ -1,4 +1,4 @@
-package academ.findyurov;
+package academ.findyurov.shape;
 
 public interface Shape {
     double getWidth();
