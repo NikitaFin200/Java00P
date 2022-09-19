@@ -9,13 +9,15 @@ import static academ.findyurov.vector.Vector.scalarMul;
 public class Matrix {
     private double[] coordinates;
 
-    private Vector[] row;
+    private final Vector[] row;
 
     public Matrix(int n, int m) {
         if (n <= 0) {
             throw new IllegalArgumentException("You cannot create a matrix of size 0 or less");
         }
+
         row = new Vector[n];
+
         for (int i = 0; i < n; ++i) {
             row[i] = new Vector(m);
         }
@@ -31,12 +33,15 @@ public class Matrix {
 
     public Matrix(double[][] matrix) {
         int rowCount = matrix.length;
+
         if (rowCount == 0) {
             throw new IllegalArgumentException("You cannot create a matrix of size 0");
         }
+
         row = new Vector[rowCount];
 
         int columnCount = 1;
+
         for (double[] aMatrix : matrix) {
             if (aMatrix.length == 0) {
                 throw new IllegalArgumentException("You cannot create a row of matrix of size 0");
@@ -50,30 +55,21 @@ public class Matrix {
             row[i] = new Vector(Arrays.copyOf(matrix[i], columnCount));
         }
     }
+
     public int getSize() {
         return coordinates.length;
     }
 
-    public void subVector(Vector vector) {
-        int size = this.getSize();
-        int vectorSize = vector.getSize();
-
-        if (size < vectorSize) {
-            this.coordinates = Arrays.copyOf(coordinates, vectorSize);
-        }
-
-        for (int i = 0; i < vectorSize; ++i) {
-            this.coordinates[i] -= vector.coordinates[i];
-        }
-    }
-
     public Matrix(Vector[] vectors) {
         int rowCount = vectors.length;
+
         if (rowCount <= 0) {
             throw new IllegalArgumentException("You cannot create a matrix of size 0 or less");
         }
+
         row = new Vector[rowCount];
         int columnCount = 1;
+
         for (Vector vector : vectors) {
             if (vector.getSize() == 0) {
                 throw new IllegalArgumentException("You cannot create a row of matrix of size 0");
@@ -82,6 +78,7 @@ public class Matrix {
                 columnCount = vector.getSize();
             }
         }
+
         for (int i = 0; i < rowCount; ++i) {
             row[i] = new Vector(columnCount);
             row[i].addVector(vectors[i]);
@@ -95,11 +92,13 @@ public class Matrix {
     public int getColumnCount() {
         int rowCount = getRowCount();
         int columnCount = 1;
+
         for (int i = 0; i < rowCount; ++i) {
             if (row[i].getSize() > columnCount) {
                 columnCount = row[i].getSize();
             }
         }
+
         return columnCount;
     }
 
@@ -107,6 +106,7 @@ public class Matrix {
         if (i < 0 || i >= this.getRowCount()) {
             throw new IllegalArgumentException("Illegal index of row");
         }
+
         return new Vector(row[i]);
     }
 
@@ -114,7 +114,9 @@ public class Matrix {
         if (i < 0 || i >= this.getRowCount()) {
             throw new IllegalArgumentException("Illegal index of row");
         }
+
         int size = vector.getSize();
+
         for (int j = 0; j < size; ++j) {
             row[i].setCoordinate(j, vector.getCoordinate(j));
         }
@@ -124,17 +126,21 @@ public class Matrix {
         if (i < 0 || i >= this.getColumnCount()) {
             throw new IllegalArgumentException("Illegal index of column");
         }
+
         int height = this.getRowCount();
         Vector vector = new Vector(height);
+
         for (int j = 0; j < height; ++j) {
             vector.setCoordinate(j, this.row[j].getCoordinate(i));
         }
+
         return vector;
     }
 
     public void transposition() {
         int rowCount = this.getRowCount();
         int columnCount = this.getColumnCount();
+
         for (int i = 0; i < rowCount; ++i) {
             for (int j = i; j < columnCount; ++j) {
                 double support = row[i].getCoordinate(j);
@@ -153,6 +159,7 @@ public class Matrix {
 
     public double getDeterminant() {
         int height = this.getRowCount();
+
         if (height != this.getColumnCount()) {
             throw new IllegalArgumentException("determinant can be computed from the elements of a square matrix only");
         }
@@ -174,10 +181,12 @@ public class Matrix {
         } else {
             int decompositionIndex = 0;
             double determinant = 0;
+
             for (int i = 0; i < height; i++) {
                 determinant += Math.pow(-1, i) * getRow(i).getCoordinate(decompositionIndex) *
                         getMinor(this, i, decompositionIndex);
             }
+
             return determinant;
         }
     }
@@ -185,6 +194,7 @@ public class Matrix {
     private static double getMinor(Matrix matrix, int firstIndex, int secondIndex) {
         int length = matrix.getRowCount() - 1;
         Matrix result = new Matrix(length, length);
+
         for (int i = 0, i2 = 0; i < length + 1; i++) {
             for (int j = 0, j2 = 0; j < length + 1; j++) {
                 if (i != firstIndex && j != secondIndex) {
@@ -205,9 +215,11 @@ public class Matrix {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("{");
         int size = getRowCount();
+
         for (int i = 0; i < size - 1; i++) {
             stringBuilder.append(row[i].toString()).append(",\n");
         }
+
         stringBuilder.append(row[size - 1]).append("}");
         return stringBuilder.toString();
     }
@@ -216,32 +228,50 @@ public class Matrix {
         int height = this.getRowCount();
         int width = this.getColumnCount();
         Vector mulResult = new Vector(height);
+
         for (int i = 0; i < height; ++i) {
             double support = 0;
+
             for (int j = 0; j < width; ++j) {
                 support += this.getRow(i).getCoordinate(j) * vector.getCoordinate(j);
             }
+
             mulResult.setCoordinate(i, support);
         }
+
         return mulResult;
     }
 
     public void sum(Matrix matrix) {
         int height = this.getRowCount();
+
         if (height != matrix.getRowCount() || this.getColumnCount() != matrix.getColumnCount()) {
             throw new IllegalArgumentException("Illegal Argument Exception");
         }
+
         for (int i = 0; i < height; ++i) {
             Vector vector = Vector.addVector(this.getRow(i), matrix.getRow(i));
             this.setRow(i, vector);
         }
     }
 
+    public static Matrix sub(Matrix matrix1, Matrix matrix2) {
+        if (matrix1.getRowCount() != matrix2.getRowCount() || matrix1.getColumnCount() != matrix2.getColumnCount()) {
+            throw new IllegalArgumentException("Illegal Argument Exception");
+        }
+
+        Matrix matrix = new Matrix(matrix1);
+        matrix.sub(matrix2);
+        return matrix;
+    }
+
     public void sub(Matrix matrix) {
         int height = this.getRowCount();
+
         if (height != matrix.getRowCount() || this.getColumnCount() != matrix.getColumnCount()) {
             throw new IllegalArgumentException("Illegal Argument Exception");
         }
+
         for (int i = 0; i < height; ++i) {
             Vector vector = Vector.subVector(this.getRow(i), matrix.getRow(i));
             this.setRow(i, vector);
@@ -252,32 +282,28 @@ public class Matrix {
         if (matrix1.getRowCount() != matrix2.getRowCount() || matrix1.getColumnCount() != matrix2.getColumnCount()) {
             throw new IllegalArgumentException("Illegal Argument Exception");
         }
+
         Matrix matrix = new Matrix(matrix1);
         matrix.sum(matrix2);
         return matrix;
     }
 
-    public static Matrix sub(Matrix matrix1, Matrix matrix2) {
-        if (matrix1.getRowCount() != matrix2.getRowCount() || matrix1.getColumnCount() != matrix2.getColumnCount()) {
-            throw new IllegalArgumentException("Illegal Argument Exception");
-        }
-        Matrix matrix = new Matrix(matrix1);
-        matrix.sub(matrix2);
-        return matrix;
-    }
-
     public static Matrix mul(Matrix matrix1, Matrix matrix2) {
         int rowCount = matrix1.getRowCount();
+
         if (rowCount != matrix2.getColumnCount()) {
             throw new IllegalArgumentException("Illegal Argument Exception");
         }
+
         Matrix mul = new Matrix(rowCount, rowCount);
+
         for (int i = 0; i < rowCount; ++i) {
             for (int j = 0; j < rowCount; ++j) {
                 double support = scalarMul(matrix1.getRow(i), matrix2.getColumn(j));
                 mul.row[i].setCoordinate(j, support);
             }
         }
+
         return mul;
     }
 }
