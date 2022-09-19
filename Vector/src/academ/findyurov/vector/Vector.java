@@ -3,7 +3,7 @@ package academ.findyurov.vector;
 import java.util.Arrays;
 
 public class Vector {
-    private double[] coordinates;
+    public double[] coordinates;
 
     public Vector(int n) {
         if (n <= 0) {
