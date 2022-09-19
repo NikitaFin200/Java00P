@@ -200,6 +200,7 @@ public class Matrix {
                 if (i != firstIndex && j != secondIndex) {
                     result.row[i2].setCoordinate(j2, matrix.getRow(i).getCoordinate(j));
                     j2++;
+
                     if (j2 == length) {
                         j2 = 0;
                         i2++;

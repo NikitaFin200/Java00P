@@ -19,6 +19,7 @@ public class Main {
                 {3, 8, 11, 4},
                 {2, 3, 1, 12}
         };
+
         Matrix matrix2 = new Matrix(matrix);
         System.out.println(matrix2.toString());
         System.out.println();
