@@ -99,7 +99,7 @@ public class Main {
         System.out.println(matrix2.toString());
         System.out.println();
 
-        System.out.println("Multiply the matrix (unit) by the matrix 3:");
+        System.out.println("Multiply the matrix (unit) by the matrix 33333333333333333:");
         matrix1 = new Matrix(new double[][]{
                 {1,0,0,0},
                 {0,1,0,0},
