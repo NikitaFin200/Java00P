@@ -93,7 +93,7 @@ public class Main {
         System.out.println(matrix2.toString());
         System.out.println();
 
-        System.out.println("Now we subtract matrix 3 from the new matrix 2:");
+        System.out.println("Now we subtract matrix 3 from the new matrix 22222222222222222:");
         matrix2.sub(matrix3);
         System.out.println("Now matrix 2 has the form: ");
         System.out.println(matrix2.toString());
